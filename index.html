@@ -39,8 +39,8 @@ footer{text-align:center;padding:25px;color:#9584a9;font-size:12px}
 <div class="card"><div class="emoji">👻</div><h2>Horror Games</h2><p>Spooky games and creepy nights.</p><button onclick="openCategory('Horror')">Open category</button></div>
 <div class="card"><div class="emoji">🕹️</div><h2>Arcade Games</h2><p>Quick games to pass the time.</p><button onclick="openCategory('Arcade')">Open category</button></div>
 <div class="card"><div class="emoji">🧩</div><h2>Puzzle Games</h2><p>Think, solve, and conquer.</p><button onclick="openCategory('Puzzle')">Open category</button></div>
-<div class="card"><div class="emoji">⚔️</div><h2>Action Games</h2><p>More games coming soon.</p><button onclick="openCategory('Action')">Open category</button></div>
-<div class="card"><div class="emoji">🌍</div><h2>Adventure Games</h2><p>Explore new worlds.</p><button onclick="openCategory('Adventure')">Open category</button></div>
+<div class="card"><div class="emoji">⚡</div><h2>Action Games</h2><p>Fast reflexes and challenges.</p><button onclick="openCategory('Action')">Open category</button></div>
+<div class="card"><div class="emoji">🌍</div><h2>Adventure Games</h2><p>Explore, jump, and solve puzzles.</p><button onclick="openCategory('Adventure')">Open category</button></div>
 </section>
 
 <section id="gameSection" class="hidden">
@@ -59,13 +59,21 @@ const gameList = [
 {name:"Five Nights at Freddy's 2",cat:"Horror",icon:"🎭",url:"https://fnaf.co/five-nights-at-freddys-2"},
 {name:"Five Nights at Freddy's 3",cat:"Horror",icon:"🐰",url:"https://fnaf.co/five-nights-at-freddys-3"},
 {name:"Five Nights at Freddy's 4",cat:"Horror",icon:"🌙",url:"https://fnaf.co/fnaf-4"},
+
 {name:"Snake",cat:"Arcade",icon:"🐍",url:"https://playsnake.org/"},
 {name:"Breakout",cat:"Arcade",icon:"🧱",url:"https://www.crazygames.com/t/breakout"},
 {name:"Tetris",cat:"Arcade",icon:"🟦",url:"https://tetris.com/play-tetris"},
+
 {name:"2048",cat:"Puzzle",icon:"🔢",url:"https://play2048.co/"},
 {name:"Minesweeper",cat:"Puzzle",icon:"💣",url:"https://minesweeper.online/"},
 {name:"Crate Shift",cat:"Puzzle",icon:"📦",url:"https://www.maddoxlabs.com/play/"},
-{name:"Magicor",cat:"Puzzle",icon:"🐧",url:"https://www.magicor.org/"}
+{name:"Magicor",cat:"Puzzle",icon:"🐧",url:"https://www.magicor.org/"},
+
+{name:"Geometry Dash-style game",cat:"Action",icon:"🔺",url:"https://www.crazygames.com/game/geometry-dash-online"},
+{name:"Stickman Hook",cat:"Action",icon:"🪝",url:"https://www.crazygames.com/game/stickman-hook"},
+
+{name:"Fireboy and Watergirl",cat:"Adventure",icon:"🔥",url:"https://www.coolmathgames.com/0-fireboy-and-water-girl-in-the-forest-temple"},
+{name:"Papa Louie Games",cat:"Adventure",icon:"🍕",url:"https://www.coolmathgames.com/"}
 ];
 
 let currentCategory = "";
@@ -115,27 +123,30 @@ function renderGames(){
  matches.forEach(game=>{
   const card = document.createElement("div");
   card.className = "card";
+
   const emoji = document.createElement("div");
   emoji.className = "emoji";
   emoji.textContent = game.icon;
+
   const title = document.createElement("h2");
   title.textContent = game.name;
+
   const description = document.createElement("p");
   description.textContent = "Category: " + game.cat;
+
   const link = document.createElement("a");
   link.className = "play";
   link.href = game.url;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   link.textContent = "Play game ↗";
+
   card.append(emoji,title,description,link);
   gamesContainer.appendChild(card);
  });
 
  status.textContent = matches.length ? "" :
-  (currentCategory === "Action" || currentCategory === "Adventure"
-  ? "More games coming soon! 🥛"
-  : "No games found. Try another search.");
+  "More games coming soon! 🥛";
  status.classList.toggle("hidden",matches.length > 0);
 }
 
