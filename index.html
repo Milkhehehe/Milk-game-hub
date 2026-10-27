@@ -3,293 +3,145 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Milk Game Hub</title>
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: #0b0d12;
-  color: #f4f4f8;
-  font-family: system-ui, sans-serif;
-}
-
-header {
-  padding: 22px;
-  background: #151923;
-  border-bottom: 1px solid #303747;
-  font-size: 23px;
-  font-weight: 800;
-}
-
-header span { color: #a78bfa; }
-
-main {
-  max-width: 1000px;
-  margin: auto;
-  padding: 24px 16px;
-}
-
-h1 { font-size: 32px; margin-bottom: 8px; }
-p { color: #a1a6b5; }
-
-button, .play {
-  display: inline-block;
-  padding: 12px 15px;
-  border: 0;
-  border-radius: 9px;
-  background: #a78bfa;
-  color: #171222;
-  font-weight: bold;
-  font-size: 14px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.search {
-  display: flex;
-  gap: 8px;
-  margin: 24px 0;
-}
-
-input {
-  min-width: 0;
-  flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #303747;
-  background: #151923;
-  color: white;
-  font-size: 16px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-  gap: 14px;
-}
-
-.card, .category {
-  background: #151923;
-  border: 1px solid #303747;
-  border-radius: 13px;
-  overflow: hidden;
-}
-
-.art {
-  padding: 24px 8px;
-  text-align: center;
-  font-size: 42px;
-  background: linear-gradient(135deg,#292044,#182b42);
-}
-
-.details { padding: 13px; }
-.details h3 { margin: 0 0 6px; }
-.details p { font-size: 13px; }
-
-.details .play {
-  width: 100%;
-  text-align: center;
-}
-
-.category {
-  padding: 22px 14px;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-  font-size: 17px;
-  font-weight: bold;
-}
-
-.category:active { transform: scale(0.98); }
-
-.category .emoji {
-  display: block;
-  font-size: 38px;
-  margin-bottom: 8px;
-}
-
-.back {
-  background: #202532;
-  color: white;
-  margin-bottom: 16px;
-}
-
-footer {
-  text-align: center;
-  padding: 30px;
-  color: #a1a6b5;
-}
-
-[hidden] { display: none !important; }
+*{box-sizing:border-box}
+body{margin:0;background:#100b1c;color:#f5efff;font-family:Arial,sans-serif}
+header{text-align:center;padding:30px 16px 20px;background:#1c1230}
+h1{margin:0 0 8px;color:#d8b4fe;font-size:clamp(30px,7vw,46px)}
+header p{color:#c4b5d8;margin:0}
+main{max-width:1000px;margin:auto;padding:20px 16px}
+input{width:100%;padding:14px;border:1px solid #49345f;border-radius:12px;background:#20152f;color:white;font-size:16px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
+.card{background:#20152f;border:1px solid #38264d;border-radius:16px;padding:20px 12px;text-align:center}
+.card .emoji{font-size:38px;margin-bottom:10px}
+.card h2{font-size:18px;margin:5px 0 10px}
+.card p{font-size:13px;color:#c4b5d8;line-height:1.4}
+button,.play{display:inline-block;border:0;border-radius:10px;padding:11px 14px;background:#a855f7;color:white;font-weight:bold;text-decoration:none;cursor:pointer;font-size:14px}
+button:hover,.play:hover{background:#9333ea}
+.back{background:#38264d;margin-bottom:16px}
+.hidden{display:none!important}
+#status{text-align:center;color:#c4b5d8;padding:18px}
+footer{text-align:center;padding:25px;color:#9584a9;font-size:12px}
 </style>
 </head>
-
 <body>
-<header>🥛 Milk <span>Game Hub</span></header>
+<header>
+<h1>🥛 Milk Game Hub</h1>
+<p>Your little corner of the internet for games.</p>
+</header>
 
 <main>
-  <section id="home">
-    <h1>Find your next game.</h1>
-    <p>Choose a category and find something fun!</p>
+<input id="search" type="search" placeholder="🔎 Search games or categories...">
 
-    <div class="grid">
-      <button class="category" data-category="Horror">
-        <span class="emoji">👻</span>
-        Horror Games
-        <p>Survive the night...</p>
-      </button>
+<section id="categories" class="grid">
+<div class="card"><div class="emoji">👻</div><h2>Horror Games</h2><p>Spooky games and creepy nights.</p><button onclick="openCategory('Horror')">Open category</button></div>
+<div class="card"><div class="emoji">🕹️</div><h2>Arcade Games</h2><p>Quick games to pass the time.</p><button onclick="openCategory('Arcade')">Open category</button></div>
+<div class="card"><div class="emoji">🧩</div><h2>Puzzle Games</h2><p>Think, solve, and conquer.</p><button onclick="openCategory('Puzzle')">Open category</button></div>
+<div class="card"><div class="emoji">⚔️</div><h2>Action Games</h2><p>More games coming soon.</p><button onclick="openCategory('Action')">Open category</button></div>
+<div class="card"><div class="emoji">🌍</div><h2>Adventure Games</h2><p>Explore new worlds.</p><button onclick="openCategory('Adventure')">Open category</button></div>
+</section>
 
-      <button class="category" data-category="Arcade">
-        <span class="emoji">🎮</span>
-        Arcade Games
-        <p>Quick fun.</p>
-      </button>
-
-      <button class="category" data-category="Puzzle">
-        <span class="emoji">🧩</span>
-        Puzzle Games
-        <p>Use your brain.</p>
-      </button>
-
-      <button class="category" data-category="Action">
-        <span class="emoji">⚡</span>
-        Action Games
-        <p>Coming soon.</p>
-      </button>
-    </div>
-  </section>
-
-  <section id="categoryPage" hidden>
-    <button class="back" id="back">← Back to categories</button>
-    <h1 id="categoryTitle">Horror Games</h1>
-    <p id="categoryDescription">Pick your game.</p>
-
-    <div class="search">
-      <input id="search" placeholder="Search games..."
-        aria-label="Search games">
-      <button id="searchBtn">Search</button>
-    </div>
-
-    <section class="grid" id="games"></section>
-    <p id="empty" hidden>No games found.</p>
-  </section>
+<section id="gameSection" class="hidden">
+<button class="back" onclick="showCategories()">← Back to categories</button>
+<h2 id="categoryTitle">Games</h2>
+<div id="games" class="grid"></div>
+<p id="status" class="hidden"></p>
+</section>
 </main>
 
-<footer>Milk Game Hub · Made for fun 🥛</footer>
+<footer>Milk Game Hub • Games are hosted by external websites.</footer>
 
 <script>
-const games = [
-  {
-    name: "Five Nights at Freddy's",
-    cat: "Horror",
-    icon: "🐻",
-    url: "https://fnaf.co/"
-  },
-  {
-    name: "Five Nights at Freddy's 2",
-    cat: "Horror",
-    icon: "🎭",
-    url: "https://fnaf.co/five-nights-at-freddys-2"
-  },
-  {
-    name: "Five Nights at Freddy's 3",
-    cat: "Horror",
-    icon: "🐰",
-    url: "https://fnaf.co/five-nights-at-freddys-3"
-  },
-  {
-    name: "Five Nights at Freddy's 4",
-    cat: "Horror",
-    icon: "🌙",
-    url: "https://fnaf.co/fnaf-4"
-  }
+const gameList = [
+{name:"Five Nights at Freddy's",cat:"Horror",icon:"🐻",url:"https://fnaf.co/"},
+{name:"Five Nights at Freddy's 2",cat:"Horror",icon:"🎭",url:"https://fnaf.co/five-nights-at-freddys-2"},
+{name:"Five Nights at Freddy's 3",cat:"Horror",icon:"🐰",url:"https://fnaf.co/five-nights-at-freddys-3"},
+{name:"Five Nights at Freddy's 4",cat:"Horror",icon:"🌙",url:"https://fnaf.co/fnaf-4"},
+{name:"Snake",cat:"Arcade",icon:"🐍",url:"https://playsnake.org/"},
+{name:"Breakout",cat:"Arcade",icon:"🧱",url:"https://www.crazygames.com/t/breakout"},
+{name:"Tetris",cat:"Arcade",icon:"🟦",url:"https://tetris.com/play-tetris"},
+{name:"2048",cat:"Puzzle",icon:"🔢",url:"https://play2048.co/"},
+{name:"Minesweeper",cat:"Puzzle",icon:"💣",url:"https://minesweeper.online/"},
+{name:"Crate Shift",cat:"Puzzle",icon:"📦",url:"https://www.maddoxlabs.com/play/"},
+{name:"Magicor",cat:"Puzzle",icon:"🐧",url:"https://www.magicor.org/"}
 ];
 
-const home = document.getElementById("home");
-const categoryPage = document.getElementById("categoryPage");
+let currentCategory = "";
+
+const categories = document.getElementById("categories");
+const gameSection = document.getElementById("gameSection");
+const gamesContainer = document.getElementById("games");
 const categoryTitle = document.getElementById("categoryTitle");
-const categoryDescription =
-  document.getElementById("categoryDescription");
-const grid = document.getElementById("games");
 const search = document.getElementById("search");
+const status = document.getElementById("status");
 
-let currentCategory = "Horror";
-
-document.querySelectorAll("[data-category]").forEach(button => {
-  button.addEventListener("click", () => {
-    currentCategory = button.dataset.category;
-    home.hidden = true;
-    categoryPage.hidden = false;
-
-    categoryTitle.textContent = currentCategory + " Games";
-    categoryDescription.textContent =
-      currentCategory === "Horror"
-        ? "Survive the night. Choose your game!"
-        : "More games coming soon!";
-
-    search.value = "";
-    render();
-    window.scrollTo(0, 0);
-  });
-});
-
-document.getElementById("back").addEventListener("click", () => {
-  categoryPage.hidden = true;
-  home.hidden = false;
-  window.scrollTo(0, 0);
-});
-
-function render() {
-  const query = search.value.toLowerCase().trim();
-
-  const results = games.filter(game =>
-    game.cat === currentCategory &&
-    game.name.toLowerCase().includes(query)
-  );
-
-  grid.replaceChildren();
-  document.getElementById("empty").hidden =
-    results.length !== 0;
-
-  results.forEach(game => {
-    const card = document.createElement("article");
-    card.className = "card";
-
-    const art = document.createElement("div");
-    art.className = "art";
-    art.textContent = game.icon;
-
-    const details = document.createElement("div");
-    details.className = "details";
-
-    const title = document.createElement("h3");
-    title.textContent = game.name;
-
-    const category = document.createElement("p");
-    category.textContent = game.cat;
-
-    const play = document.createElement("a");
-    play.className = "play";
-    play.textContent = "Play Game 🎮";
-    play.href = game.url;
-    play.target = "_blank";
-    play.rel = "noopener noreferrer";
-
-    details.append(title, category, play);
-    card.append(art, details);
-    grid.appendChild(card);
-  });
+function openCategory(category){
+ currentCategory = category;
+ categories.classList.add("hidden");
+ gameSection.classList.remove("hidden");
+ categoryTitle.textContent = category + " Games";
+ search.value = "";
+ search.placeholder = "🔎 Search in " + category + "...";
+ renderGames();
 }
 
-document.getElementById("searchBtn")
-  .addEventListener("click", render);
+function showCategories(){
+ currentCategory = "";
+ gameSection.classList.add("hidden");
+ categories.classList.remove("hidden");
+ search.value = "";
+ search.placeholder = "🔎 Search games or categories...";
+ renderCategories();
+}
 
-search.addEventListener("input", render);
+function renderCategories(){
+ const cards = categories.querySelectorAll(".card");
+ const query = search.value.toLowerCase().trim();
+ cards.forEach(card=>{
+  card.classList.toggle("hidden",!card.innerText.toLowerCase().includes(query));
+ });
+}
 
-search.addEventListener("keydown", event => {
-  if (event.key === "Enter") render();
+function renderGames(){
+ gamesContainer.innerHTML = "";
+ const query = search.value.toLowerCase().trim();
+ const matches = gameList.filter(game=>
+  game.cat === currentCategory &&
+  (game.name.toLowerCase().includes(query) || game.cat.toLowerCase().includes(query))
+ );
+
+ matches.forEach(game=>{
+  const card = document.createElement("div");
+  card.className = "card";
+  const emoji = document.createElement("div");
+  emoji.className = "emoji";
+  emoji.textContent = game.icon;
+  const title = document.createElement("h2");
+  title.textContent = game.name;
+  const description = document.createElement("p");
+  description.textContent = "Category: " + game.cat;
+  const link = document.createElement("a");
+  link.className = "play";
+  link.href = game.url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Play game ↗";
+  card.append(emoji,title,description,link);
+  gamesContainer.appendChild(card);
+ });
+
+ status.textContent = matches.length ? "" :
+  (currentCategory === "Action" || currentCategory === "Adventure"
+  ? "More games coming soon! 🥛"
+  : "No games found. Try another search.");
+ status.classList.toggle("hidden",matches.length > 0);
+}
+
+search.addEventListener("input",()=>{
+ if(currentCategory) renderGames();
+ else renderCategories();
 });
 </script>
 </body>
