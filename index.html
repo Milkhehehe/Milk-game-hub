@@ -5,14 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Milk Game Hub</title>
+
 <style>
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
   background: #0b0d12;
   color: #f4f4f8;
   font-family: system-ui, sans-serif;
 }
+
 header {
   padding: 22px;
   background: #151923;
@@ -20,11 +23,24 @@ header {
   font-size: 23px;
   font-weight: 800;
 }
+
 header span { color: #a78bfa; }
-main { max-width: 1000px; margin: auto; padding: 24px 16px; }
+
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 24px 16px;
+}
+
 h1 { font-size: 36px; margin-bottom: 8px; }
 p { color: #a1a6b5; }
-.search { display: flex; gap: 8px; margin: 24px 0; }
+
+.search {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0;
+}
+
 input {
   min-width: 0;
   flex: 1;
@@ -35,6 +51,7 @@ input {
   color: white;
   font-size: 16px;
 }
+
 button {
   padding: 12px 15px;
   border: 0;
@@ -44,41 +61,67 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
-.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
-.filters button { background: #202532; color: white; }
-.filters .active { background: #a78bfa; color: #171222; }
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.filters button {
+  background: #202532;
+  color: white;
+}
+
+.filters .active {
+  background: #a78bfa;
+  color: #171222;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 14px;
 }
+
 .card {
   background: #151923;
   border: 1px solid #252b39;
   border-radius: 13px;
   overflow: hidden;
 }
+
 .art {
   padding: 24px 8px;
   text-align: center;
   font-size: 42px;
-  background: linear-gradient(135deg,#292044,#182b42);
+  background: linear-gradient(135deg, #292044, #182b42);
 }
+
 .details { padding: 13px; }
 .details h3 { margin: 0 0 6px; }
 .details p { font-size: 13px; }
 .details button { width: 100%; }
-footer { text-align: center; padding: 30px; color: #a1a6b5; }
+
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #a1a6b5;
+}
 </style>
 </head>
+
 <body>
 <header>🥛 Milk <span>Game Hub</span></header>
+
 <main>
   <h1>Find your next game.</h1>
   <p>Your little corner of gaming. Pick something fun!</p>
 
   <div class="search">
-    <input id="search" placeholder="Search games..." aria-label="Search games">
+    <input id="search" placeholder="Search games..."
+      aria-label="Search games">
     <button id="searchBtn">Search</button>
   </div>
 
@@ -87,15 +130,23 @@ footer { text-align: center; padding: 30px; color: #a1a6b5; }
     <button data-cat="Arcade">Arcade</button>
     <button data-cat="Puzzle">Puzzle</button>
     <button data-cat="Action">Action</button>
+    <button data-cat="Horror">Horror 👻</button>
   </nav>
 
   <section class="grid" id="games"></section>
   <p id="empty" hidden>No games found. Try another search.</p>
 </main>
+
 <footer>Milk Game Hub · Made for fun 🥛</footer>
 
 <script>
 const games = [
+  {
+    name: "Five Nights at Freddy's 2",
+    cat: "Horror",
+    icon: "🐻",
+    url: "https://fnaf.co/five-nights-at-freddys-2"
+  },
   {name:"Arcade Zone",cat:"Arcade",icon:"🎮"},
   {name:"Puzzle Zone",cat:"Puzzle",icon:"🧩"},
   {name:"Action Zone",cat:"Action",icon:"⚡"},
@@ -105,27 +156,55 @@ const games = [
 ];
 
 let category = "All";
+
 const grid = document.getElementById("games");
 const search = document.getElementById("search");
 
 function render() {
   const query = search.value.toLowerCase().trim();
+
   const results = games.filter(game =>
     game.name.toLowerCase().includes(query) &&
     (category === "All" || game.cat === category)
   );
 
   grid.replaceChildren();
-  document.getElementById("empty").hidden = results.length !== 0;
+  document.getElementById("empty").hidden =
+    results.length !== 0;
 
   results.forEach(game => {
     const card = document.createElement("article");
     card.className = "card";
-    card.innerHTML =
-      '<div class="art">' + game.icon + '</div>' +
-      '<div class="details"><h3></h3><p>' + game.cat +
-      '</p><button type="button">Coming soon</button></div>';
-    card.querySelector("h3").textContent = game.name;
+
+    const art = document.createElement("div");
+    art.className = "art";
+    art.textContent = game.icon;
+
+    const details = document.createElement("div");
+    details.className = "details";
+
+    const title = document.createElement("h3");
+    title.textContent = game.name;
+
+    const cat = document.createElement("p");
+    cat.textContent = game.cat;
+
+    const play = document.createElement("button");
+    play.type = "button";
+    play.textContent = game.url ? "Play Game 🎮" : "Coming soon";
+    play.disabled = !game.url;
+
+    if (game.url) {
+      play.addEventListener("click", () => {
+        window.open(game.url, "_blank", "noopener,noreferrer");
+      });
+    } else {
+      play.style.opacity = "0.6";
+      play.style.cursor = "not-allowed";
+    }
+
+    details.append(title, cat, play);
+    card.append(art, details);
     grid.appendChild(card);
   });
 }
@@ -133,14 +212,20 @@ function render() {
 document.querySelectorAll("[data-cat]").forEach(button => {
   button.addEventListener("click", () => {
     category = button.dataset.cat;
-    document.querySelectorAll("[data-cat]").forEach(item =>
-      item.classList.toggle("active", item === button)
-    );
+
+    document.querySelectorAll("[data-cat]").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
     render();
   });
 });
 
-document.getElementById("searchBtn").addEventListener("click", render);
+document.getElementById("searchBtn")
+  .addEventListener("click", render);
+
+search.addEventListener("input", render);
+
 search.addEventListener("keydown", event => {
   if (event.key === "Enter") render();
 });
