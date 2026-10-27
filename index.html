@@ -2,158 +2,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Milk Game Hub</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#100b1c;color:#f5efff;font-family:Arial,sans-serif}
-header{text-align:center;padding:30px 16px 20px;background:#1c1230}
-h1{margin:0 0 8px;color:#d8b4fe;font-size:clamp(30px,7vw,46px)}
-header p{color:#c4b5d8;margin:0}
-main{max-width:1000px;margin:auto;padding:20px 16px}
-input{width:100%;padding:14px;border:1px solid #49345f;border-radius:12px;background:#20152f;color:white;font-size:16px;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
-.card{background:#20152f;border:1px solid #38264d;border-radius:16px;padding:20px 12px;text-align:center}
-.card .emoji{font-size:38px;margin-bottom:10px}
-.card h2{font-size:18px;margin:5px 0 10px}
-.card p{font-size:13px;color:#c4b5d8;line-height:1.4}
-button,.play{display:inline-block;border:0;border-radius:10px;padding:11px 14px;background:#a855f7;color:white;font-weight:bold;text-decoration:none;cursor:pointer;font-size:14px}
-button:hover,.play:hover{background:#9333ea}
-.back{background:#38264d;margin-bottom:16px}
-.hidden{display:none!important}
-#status{text-align:center;color:#c4b5d8;padding:18px}
-footer{text-align:center;padding:25px;color:#9584a9;font-size:12px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100b20">
+  <title>Milk Game Hub</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #100b20;
+      --panel: #1d1533;
+      --card: #241a3d;
+      --purple: #a78bfa;
+      --pink: #f0abfc;
+      --text: #f8f5ff;
+      --muted: #c2b8d8;
+      --border: #40305e;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    button, a, input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--pink);
+      outline-offset: 3px;
+    }
+
+    header {
+      padding: 30px 18px 24px;
+      text-align: center;
+      background: linear-gradient(135deg, #291548, #15102a);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 3.3rem);
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    header h1 span {
+      color: var(--pink);
+    }
+
+    header p {
+      color: var(--muted);
+      margin: 10px 0 0;
+      font-size: 1rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1250px;
+      margin: auto;
+      padding: 24px 18px 45px;
+    }
+
+    .search-wrap {
+      max-width: 650px;
+      margin: 0 auto 28px;
+    }
+
+    #search {
+      display: block;
+      width: 100%;
+      min-height: 50px;
+      padding: 13px 16px;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      font-size: 16px;
+    }
+
+    #search::placeholder {
+      color: #b4a8cc;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin: 0 0 20px;
+      font-size: clamp(1.35rem, 4vw, 1.8rem);
+    }
+
+    .category-grid,
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .category-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 125px;
+      padding: 18px 10px;
+      color: var(--text);
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s,
+        transform 0.15s;
+    }
+
+    .category-card .emoji {
+      font-size: 2rem;
+    }
+
+    .category-card strong {
+      font-size: 1rem;
+    }
+
+    .category-card:hover {
+      background: #34244f;
+      border-color: var(--purple);
+    }
+
+    .game-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .game-icon {
+      display: grid;
+      place-items: center;
+      min-height: 75px;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #342050, #211833);
+      border-radius: 12px;
+      font-size: 2.3rem;
+    }
+
+    .game-card h3 {
+      margin: 0 0 7px;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+    }
+
+    .game-card p {
+      flex: 1;
+      margin: 0 0 15px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .play-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px;
+      color: #160d27;
+      background: var(--purple);
+      border-radius: 10px;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 750;
+      overflow-wrap: anywhere;
+      transition: background 0.15s;
+    }
+
+    .play-button:hover {
+      background: var(--pink);
+    }
+
+    .back-button {
+      display: block;
+      min-height: 44px;
+      margin: 0 0 22px;
+      padding: 10px 16px;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .back-button:hover {
+      border-color: var(--purple);
+    }
+
+    #status {
+      margin: 24px 0;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 20px 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (min-width: 600px) {
+      main {
+        padding: 32px 26px 50px;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .game-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .category-card {
+        min-height: 145px;
+      }
+    }
+
+    @media (min-width: 950px) {
+      .game-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .category-card {
+        cursor: pointer;
+      }
+    }
+
+    @media (max-width: 360px) {
+      main {
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .category-grid,
+      .game-grid {
+        gap: 10px;
+      }
+
+      .game-card {
+        padding: 11px;
+      }
+
+      .game-card h3 {
+        font-size: 0.98rem;
+      }
+
+      .game-card p {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (hover: hover) {
+      .category-card:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-<h1>🥛 Milk Game Hub</h1>
-<p>Your little corner of the internet for games.</p>
-</header>
+  <header>
+    <h1>🥛 Milk <span>Game Hub</span></h1>
+    <p>Your games. Your categories. Your hub.</p>
+  </header>
 
-<main>
-<input id="search" type="search" placeholder="🔎 Search games or categories...">
+  <main>
+    <div class="search-wrap">
+      <input
+        id="search"
+        type="search"
+        placeholder="🔎 Search games..."
+        aria-label="Search games and categories"
+        autocomplete="off"
+      >
+    </div>
 
-<section id="categories" class="grid">
-<div class="card"><div class="emoji">👻</div><h2>Horror Games</h2><p>Spooky games and creepy nights.</p><button onclick="openCategory('Horror')">Open category</button></div>
-<div class="card"><div class="emoji">🕹️</div><h2>Arcade Games</h2><p>Quick games to pass the time.</p><button onclick="openCategory('Arcade')">Open category</button></div>
-<div class="card"><div class="emoji">🧩</div><h2>Puzzle Games</h2><p>Think, solve, and conquer.</p><button onclick="openCategory('Puzzle')">Open category</button></div>
-<div class="card"><div class="emoji">⚡</div><h2>Action Games</h2><p>Fast reflexes and challenges.</p><button onclick="openCategory('Action')">Open category</button></div>
-<div class="card"><div class="emoji">🌍</div><h2>Adventure Games</h2><p>Explore, jump, and solve puzzles.</p><button onclick="openCategory('Adventure')">Open category</button></div>
-</section>
+    <section id="categories-view">
+      <h2 class="section-heading">Choose Your Zone</h2>
+      <div id="category-grid" class="category-grid"></div>
+    </section>
 
-<section id="gameSection" class="hidden">
-<button class="back" onclick="showCategories()">← Back to categories</button>
-<h2 id="categoryTitle">Games</h2>
-<div id="games" class="grid"></div>
-<p id="status" class="hidden"></p>
-</section>
-</main>
+    <section id="games-view" hidden>
+      <button id="back-button" class="back-button" type="button">
+        ← Back to Categories
+      </button>
+      <h2 id="games-heading" class="section-heading">Games</h2>
+      <div id="game-grid" class="game-grid"></div>
+    </section>
 
-<footer>Milk Game Hub • Games are hosted by external websites.</footer>
+    <p id="status" role="status" aria-live="polite" hidden></p>
+  </main>
 
-<script>
-const gameList = [
-{name:"Five Nights at Freddy's",cat:"Horror",icon:"🐻",url:"https://fnaf.co/"},
-{name:"Five Nights at Freddy's 2",cat:"Horror",icon:"🎭",url:"https://fnaf.co/five-nights-at-freddys-2"},
-{name:"Five Nights at Freddy's 3",cat:"Horror",icon:"🐰",url:"https://fnaf.co/five-nights-at-freddys-3"},
-{name:"Five Nights at Freddy's 4",cat:"Horror",icon:"🌙",url:"https://fnaf.co/fnaf-4"},
+  <footer>
+    Milk Game Hub · Built for phones and computers 🥛
+  </footer>
 
-{name:"Snake",cat:"Arcade",icon:"🐍",url:"https://playsnake.org/"},
-{name:"Breakout",cat:"Arcade",icon:"🧱",url:"https://www.crazygames.com/t/breakout"},
-{name:"Tetris",cat:"Arcade",icon:"🟦",url:"https://tetris.com/play-tetris"},
+  <script>
+    const categories = [
+      { name: "Horror", emoji: "👻" },
+      { name: "Arcade", emoji: "🕹️" },
+      { name: "Puzzle", emoji: "🧩" },
+      { name: "Action", emoji: "⚡" },
+      { name: "Adventure", emoji: "🗺️" }
+    ];
 
-{name:"2048",cat:"Puzzle",icon:"🔢",url:"https://play2048.co/"},
-{name:"Minesweeper",cat:"Puzzle",icon:"💣",url:"https://minesweeper.online/"},
-{name:"Crate Shift",cat:"Puzzle",icon:"📦",url:"https://www.maddoxlabs.com/play/"},
-{name:"Magicor",cat:"Puzzle",icon:"🐧",url:"https://www.magicor.org/"},
+    const games = [
+      {
+        name: "FNAF 1",
+        category: "Horror",
+        emoji: "🐻",
+        description: "Survive the night shift.",
+        url: "https://fnaf.co/"
+      },
+      {
+        name: "FNAF 2",
+        category: "Horror",
+        emoji: "🎭",
+        description: "Another night at Freddy's.",
+        url: "https://fnaf.co/five-nights-at-freddys-2"
+      },
+      {
+        name: "FNAF 3",
+        category: "Horror",
+        emoji: "🎪",
+        description: "Face the horror once again.",
+        url: "https://fnaf.co/five-nights-at-freddys-3"
+      },
+      {
+        name: "FNAF 4",
+        category: "Horror",
+        emoji: "🌙",
+        description: "Nightmares are waiting.",
+        url: "https://fnaf.co/fnaf-4"
+      },
+      {
+        name: "Snake",
+        category: "Arcade",
+        emoji: "🐍",
+        description: "Eat, grow, and avoid yourself.",
+        url: "https://playsnake.org/"
+      },
+      {
+        name: "Breakout",
+        category: "Arcade",
+        emoji: "🧱",
+        description: "Bounce the ball and clear the bricks.",
+        url: "https://www.crazygames.com/t/breakout"
+      },
+      {
+        name: "Tetris",
+        category: "Arcade",
+        emoji: "🟪",
+        description: "Fit the falling blocks together.",
+        url: "https://tetris.com/play-tetris"
+      },
+      {
+        name: "2048",
+        category: "Puzzle",
+        emoji: "🔢",
+        description: "Combine tiles to reach 2048.",
+        url: "https://play2048.co/"
+      },
+      {
+        name: "Minesweeper",
+        category: "Puzzle",
+        emoji: "💣",
+        description: "Clear the grid with logic.",
+        url: "https://minesweeper.online/"
+      },
+      {
+        name: "Crate Shift",
+        category: "Puzzle",
+        emoji: "📦",
+        description: "A puzzle game to try.",
+        url: "https://www.maddoxlabs.com/play/"
+      },
+      {
+        name: "Magicor",
+        category: "Puzzle",
+        emoji: "✨",
+        description: "Try a magical puzzle challenge.",
+        url: "https://www.magicor.org/"
+      },
+      {
+        name: "Geometry Dash-style Game",
+        category: "Action",
+        emoji: "🔷",
+        description: "Jump and dodge obstacles.",
+        url: "https://www.crazygames.com/game/geometry-dash-online"
+      },
+      {
+        name: "Stickman Hook",
+        category: "Action",
+        emoji: "🪝",
+        description: "Swing through the levels.",
+        url: "https://www.crazygames.com/game/stickman-hook"
+      },
+      {
+        name: "Fireboy and Watergirl",
+        category: "Adventure",
+        emoji: "🔥",
+        description: "Solve levels together with two characters.",
+        url: "https://www.coolmathgames.com/0-fireboy-and-water-girl-in-the-forest-temple"
+      },
+      {
+        name: "Papa Louie Games",
+        category: "Adventure",
+        emoji: "🍔",
+        description: "Explore a portal with restaurant games.",
+        url: "https://www.coolmathgames.com/"
+      }
+    ];
 
-{name:"Geometry Dash-style game",cat:"Action",icon:"🔺",url:"https://www.crazygames.com/game/geometry-dash-online"},
-{name:"Stickman Hook",cat:"Action",icon:"🪝",url:"https://www.crazygames.com/game/stickman-hook"},
+    const categoryGrid = document.getElementById("category-grid");
+    const gameGrid = document.getElementById("game-grid");
+    const categoriesView = document.getElementById("categories-view");
+    const gamesView = document.getElementById("games-view");
+    const heading = document.getElementById("games-heading");
+    const search = document.getElementById("search");
+    const status = document.getElementById("status");
+    const backButton = document.getElementById("back-button");
 
-{name:"Fireboy and Watergirl",cat:"Adventure",icon:"🔥",url:"https://www.coolmathgames.com/0-fireboy-and-water-girl-in-the-forest-temple"},
-{name:"Papa Louie Games",cat:"Adventure",icon:"🍕",url:"https://www.coolmathgames.com/"}
-];
+    let activeCategory = null;
 
-let currentCategory = "";
+    function makeCategoryCard(category) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "category-card";
+      button.innerHTML =
+        '<span class="emoji" aria-hidden="true"></span>' +
+        '<strong></strong>';
 
-const categories = document.getElementById("categories");
-const gameSection = document.getElementById("gameSection");
-const gamesContainer = document.getElementById("games");
-const categoryTitle = document.getElementById("categoryTitle");
-const search = document.getElementById("search");
-const status = document.getElementById("status");
+      button.querySelector(".emoji").textContent = category.emoji;
+      button.querySelector("strong").textContent = category.name;
+      button.addEventListener("click", () => {
+        activeCategory = category.name;
+        search.value = "";
+        render();
+      });
 
-function openCategory(category){
- currentCategory = category;
- categories.classList.add("hidden");
- gameSection.classList.remove("hidden");
- categoryTitle.textContent = category + " Games";
- search.value = "";
- search.placeholder = "🔎 Search in " + category + "...";
- renderGames();
-}
+      return button;
+    }
 
-function showCategories(){
- currentCategory = "";
- gameSection.classList.add("hidden");
- categories.classList.remove("hidden");
- search.value = "";
- search.placeholder = "🔎 Search games or categories...";
- renderCategories();
-}
+    function makeGameCard(game) {
+      const article = document.createElement("article");
+      article.className = "game-card";
 
-function renderCategories(){
- const cards = categories.querySelectorAll(".card");
- const query = search.value.toLowerCase().trim();
- cards.forEach(card=>{
-  card.classList.toggle("hidden",!card.innerText.toLowerCase().includes(query));
- });
-}
+      const icon = document.createElement("div");
+      icon.className = "game-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = game.emoji;
 
-function renderGames(){
- gamesContainer.innerHTML = "";
- const query = search.value.toLowerCase().trim();
- const matches = gameList.filter(game=>
-  game.cat === currentCategory &&
-  (game.name.toLowerCase().includes(query) || game.cat.toLowerCase().includes(query))
- );
+      const title = document.createElement("h3");
+      title.textContent = game.name;
 
- matches.forEach(game=>{
-  const card = document.createElement("div");
-  card.className = "card";
+      const description = document.createElement("p");
+      description.textContent = game.description;
 
-  const emoji = document.createElement("div");
-  emoji.className = "emoji";
-  emoji.textContent = game.icon;
+      const link = document.createElement("a");
+      link.className = "play-button";
+      link.href = game.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "Play Game ↗";
+      link.setAttribute("aria-label", "Play " + game.name);
 
-  const title = document.createElement("h2");
-  title.textContent = game.name;
+      article.append(icon, title, description, link);
+      return article;
+    }
 
-  const description = document.createElement("p");
-  description.textContent = "Category: " + game.cat;
+    function render() {
+      const query = search.value.trim().toLowerCase();
 
-  const link = document.createElement("a");
-  link.className = "play";
-  link.href = game.url;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = "Play game ↗";
+      categoryGrid.replaceChildren();
+      gameGrid.replaceChildren();
 
-  card.append(emoji,title,description,link);
-  gamesContainer.appendChild(card);
- });
+      const matchingGames = games.filter(game => {
+        const matchesCategory =
+          !activeCategory || game.category === activeCategory;
 
- status.textContent = matches.length ? "" :
-  "More games coming soon! 🥛";
- status.classList.toggle("hidden",matches.length > 0);
-}
+        const matchesSearch =
+          !query ||
+          game.name.toLowerCase().includes(query) ||
+          game.category.toLowerCase().includes(query) ||
+          game.description.toLowerCase().includes(query);
 
-search.addEventListener("input",()=>{
- if(currentCategory) renderGames();
- else renderCategories();
-});
-</script>
+        return matchesCategory && matchesSearch;
+      });
+
+      if (activeCategory && !query) {
+        categoriesView.hidden = true;
+        gamesView.hidden = false;
+        heading.textContent = activeCategory + " Games";
+
+        matchingGames.forEach(game => {
+          gameGrid.appendChild(makeGameCard(game));
+        });
+
+        status.hidden = matchingGames.length > 0;
+        status.textContent = matchingGames.length
+          ? ""
+          : "No games in this category yet. More coming soon!";
+        return;
+      }
+
+      if (query) {
+        categoriesView.hidden = true;
+        gamesView.hidden = false;
+        heading.textContent = activeCategory
+          ? "Search Results"
+          : "Search Results";
+
+        matchingGames.forEach(game => {
+          gameGrid.appendChild(makeGameCard(game));
+        });
+
+        status.hidden = matchingGames.length > 0;
+        status.textContent = matchingGames.length
+          ? ""
+          : "No games found. Try another search.";
+        return;
+      }
+
+      activeCategory = null;
+      categoriesView.hidden = false;
+      gamesView.hidden = true;
+      status.hidden = true;
+
+      categories.forEach(category => {
+        categoryGrid.appendChild(makeCategoryCard(category));
+      });
+    }
+
+    search.addEventListener("input", render);
+
+    backButton.addEventListener("click", () => {
+      activeCategory = null;
+      search.value = "";
+      render();
+    });
+
+    render();
+  </script>
 </body>
 </html>
